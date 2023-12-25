@@ -1,4 +1,5 @@
 # Ansible Collection - cloudcodger.proxmox_openssh
+[![CI](https://github.com/smougenot/proxmox_openssh/actions/workflows/ci.yml/badge.svg)](https://github.com/smougenot/proxmox_openssh/actions/workflows/ci.yml)
 
 This collection contains a set of roles and modules for managing servers with
 [Proxmox Virtual Environment](https://www.proxmox.com/en/proxmox-virtual-environment/overview)
