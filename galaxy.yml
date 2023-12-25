@@ -1,12 +1,12 @@
 ---
-namespace: cloudcodger
+namespace: smougenot
 name: proxmox_openssh
-version: 1.0.2
+version: 1.0.0
 readme: README.md
 authors:
-  - Cloud Codger <cloudcodger@pm.me>
+  - Sylvain Mougenot <sylvain@mougenot.link>
 
-description: Proxmox Cluster via openssh
+description: Proxmox Cluster management via openssh
 
 license:
   - GPL-2.0-or-later
@@ -20,8 +20,8 @@ tags:
   - 'virtualization'
 
 dependencies: {}
-repository: https://github.com/cloudcodger/proxmox_openssh
-documentation: https://github.com/cloudcodger/proxmox_openssh
-homepage: https://github.com/cloudcodger/proxmox_openssh
-issues: https://github.com/cloudcodger/proxmox_openssh/issues
+repository: https://github.com/smougenot/proxmox_openssh
+documentation: https://github.com/smougenot/proxmox_openssh
+homepage: https://github.com/smougenot/proxmox_openssh
+issues: https://github.com/smougenot/proxmox_openssh/issues
 build_ignore: []
