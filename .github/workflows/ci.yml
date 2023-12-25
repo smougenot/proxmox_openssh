@@ -70,4 +70,6 @@ jobs:
       - name: Lint Code Base
         uses: super-linter/super-linter/slim@v5
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name != 'pull_request' }}
+          DEFAULT_BRANCH: "$default-branch"
