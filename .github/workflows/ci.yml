@@ -70,5 +70,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           VALIDATE_ALL_CODEBASE: ${{ github.event_name != 'pull_request' }}
-          DEFAULT_BRANCH: "$default-branch"
+          DEFAULT_BRANCH: "main"
           IGNORE_GITIGNORED_FILES: true
