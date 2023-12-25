@@ -1,0 +1,73 @@
+---
+name: CI
+
+# Controls when the action will run.
+on: # yamllint disable-line rule:truthy
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  dependabot:
+    name: dependabot_approve
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1.6.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Approve the PR
+        if: contains(steps.metadata.outputs.update-type, 'version-update:')
+        run: gh pr review --approve "${PR_URL}"
+      - name: Enable auto-merge for Dependabot PRs
+        if: contains(steps.metadata.outputs.update-type, 'version-update:')
+        run: gh pr merge --auto --merge "${PR_URL}"
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    if: always() # allows to run even if dependabot is skipped
+
+    needs:
+      - dependabot
+
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - run: cat .github/linters/super-linter.env >> "$GITHUB_ENV"
+
+      - name: Lint Code Base
+        uses: super-linter/super-linter/slim@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
