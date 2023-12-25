@@ -1,0 +1,38 @@
+---
+# This workflow requires a GALAXY_API_KEY secret present in the GitHub
+# repository or organization.
+#
+# See: https://github.com/marketplace/actions/publish-ansible-role-to-galaxy
+
+name: Release
+'on':
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out.
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+# Disable due to bug : https://github.com/actions/setup-python/issues/436.
+#          cache: 'pipenv'
+#          cache-dependency-path: 'Pipfile.lock'
+
+      - name: Trigger a new build for Galaxy.
+        run: >-
+          ansible-galaxy collection build --api-key ${{ secrets.GALAXY_API_KEY }}
+          --output-path ./.dist/
+
+      - name: Trigger a new publish for Galaxy.
+        run: >-
+          ansible-galaxy collection publish --api-key ${{ secrets.GALAXY_API_KEY }}
+          ./.dist/cloudcodger-proxmox_openssh-*.tar.gz
