@@ -65,8 +65,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - run: cat .github/linters/super-linter.env >> "$GITHUB_ENV"
-
       - name: Lint Code Base
         uses: super-linter/super-linter/slim@v5
         env:
